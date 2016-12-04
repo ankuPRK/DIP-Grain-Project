@@ -11,9 +11,12 @@ for i=1:1:2
         level2 = graythresh(I2);
         bw2 = ~im2bw(I2,level2*0.5);
         Im = imadd(I1,Ig);
-        bw1 = im2bw(Im,level1);
+        bw1 = im2bw(Im,level1*1.2);
         bw = imadd(bw1,bw2);
-        binary_image = imadd(bw1,bw2);
+        se = strel('disk', 10);
+        Ie = imerode(bw, se);
+        Iobr = imreconstruct(Ie, bw);
+        binary_image = Iobr;
         imwrite(binary_image, strcat(lsdir{i},num2str(j),'_b.jpg'));
     end
 end
